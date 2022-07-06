@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-family: "Poppins";
+      box-sizing: border-box;
+    }
+
+    nav {
+      background-color: rgb(255, 255, 255);
+      box-shadow: 0px 0px 15px #dedede;
+      padding: 20px;
+      display: flex;
+      place-content: end;
+      z-index: 9999999;
+    }
+
+    nav img {
+      width: 32px;
+      animation: rotateOut .5s forwards;
+
+
+    }
+
+    .menuOpen {
+      animation: rotate .3s forwards;
+    }
+
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+
+
+    }
+
+    @keyframes rotateOut {
+      0% {
+        border-radius: 100%;
+        transform: rotate(360deg);
+      }
+
+      50% {
+        border-radius: 0%;
+        transform: rotate(0);
+      }
+
+
+    }
+
+    .container {
+      display: flex;
+      place-items: center;
+      place-content: space-between;
+    }
+
+    .control {
+      padding: 80px 20px;
+      font-weight: 900;
+      color: #ffffff;
+      position: absolute;
+      z-index: 999;
+      text-shadow: 0px 0px 4px black;
+      background-color: rgba(0, 0, 0, 0.154);
+    }
+
+
+
+    .control:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.394);
+      transition: 0.5s;
+    }
+
+    .container-img::-webkit-scrollbar {
+      height: 0;
+
+    }
+
+
+
+    .container-img {
+      max-height: 40vh;
+      display: flex;
+      overflow-x: scroll;
+    }
+
+    .container img {
+      max-width: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .container .right {
+      right: 20px;
+    }
+
+    .container .left {
+      left: 20px;
+    }
+
+    @media screen and (max-width:480px) {
+      .control {
+        opacity: 0;
+      }
+
+      .container {
+        height: 100vh;
+      }
+
+      .container-img {
+        max-height: 100%;
+        overflow: hidden;
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body onselectstart="return false">
+  <nav>
+    <img src="./iconclosed.png" alt="menu icon">
+  </nav>
+
+  <div class="container">
+    <div class="left control">LEFT</div>
+    <div class="container-img">
+      <img src="./brasil.jpg" alt="">
+      <img src="./portugal.jpg" alt="">
+      <img src="./japan.jpg" alt="">
+    </div>
+    <div class="right control">RIGHT</div>
+  </div>
+
+  <script>
+    let countClick = 0;
+    const iconMenu = document.querySelector('nav img')
+    iconMenu.addEventListener('click', () => {
+      iconMenu.classList.toggle('menuOpen')
+      countClick++
+      if (countClick == 1) {
+        iconMenu.setAttribute('src', './iconopen.png')
+
+      }
+
+      else {
+        intervalo = setInterval(() => {
+          countClick = 0
+          iconMenu.setAttribute('src', './iconclosed.png')
+          clearInterval(intervalo)
+        }, 200);
+
+
+      }
+    })
+
+
+    // SLIDER TOPO
+
+    const leftControl = document.querySelector('.container .left')
+    const rightControl = document.querySelector('.container .right')
+    const imgSlide = document.querySelectorAll('.container-img img')
+    const maxImg = imgSlide.length
+    let indexImg = 0;
+
+
+    leftControl.addEventListener("click", previousImg)
+    leftControl.addEventListener("keydown", previousImg)
+
+    rightControl.addEventListener("click", nextImg)
+
+
+
+    if (imgSlide.length) {
+
+      interval = setInterval(() => {
+        indexImg++
+        sliderAuto()
+      }, 5000);
+    }
+
+    function sliderAuto() {
+
+      if (indexImg == maxImg) {
+        indexImg = 0
+      }
+      imgSlide[indexImg].scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      })
+
+    }
+    sliderAuto()
+
+
+
+
+    function previousImg() {
+      indexImg--
+      if (indexImg < 0) {
+        indexImg = maxImg - 1
+      }
+
+      imgSlide[indexImg].scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      })
+
+      console.log(indexImg)
+    }
+
+
+    function nextImg() {
+      indexImg++
+      if (indexImg == maxImg) {
+        indexImg = 0;
+      }
+
+      imgSlide[indexImg].scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      })
+
+      console.log(indexImg)
+    }
+  </script>
+</body>
+
+</html>
